@@ -6,7 +6,6 @@
       "examples/*"
     ],
     "scripts": {
-      "_build": "npx lerna run build --ignore 'example-*'",
       "build:example": "npm run build -w examples/basic"
     },
     "author": "Octana",
