@@ -4,8 +4,8 @@
   publish = ".next"
   ignore = "exit 1" # Don't ignore any builds
 
-# [[plugins]]
-# package = "@netlify/plugin-nextjs"
+[[plugins]]
+package = "@netlify/plugin-nextjs"
 
 [functions]
   included_files = [
