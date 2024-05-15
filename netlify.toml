@@ -1,0 +1,22 @@
+[build]
+  base = "examples/basic"
+  command = ". netlify.sh"
+  publish = ".next"
+  ignore = "exit 1" # Don't ignore any builds
+
+[[plugins]]
+package = "@netlify/plugin-nextjs"
+
+[functions]
+  included_files = [
+    "./.env.local", "./test.txt"
+  ]
+  # [functions.___netlify-handler]
+  # included_files = [
+  #   "./.env.local"
+  # ]
+
+#   [functions.___netlify-server-handler]
+#   included_files = [
+#     "./.env.local"
+#   ]
