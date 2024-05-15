@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "description": "Monorepo",
     "workspaces": [
-      "examples/*"
+      "examples/basic"
     ],
     "scripts": {
       "build:example": "npm run build -w examples/basic"
