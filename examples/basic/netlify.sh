@@ -5,6 +5,7 @@ echo
 pwd
 cd ../..
 pwd
+# Build basic
 npm run build:example
 cd ./examples/basic
 pwd
