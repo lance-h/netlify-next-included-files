@@ -1,6 +1,7 @@
 [build]
-  command = ". netlify.sh"
-  publish = "examples/basic/.next"
+  base = "examples/basic"
+  command = "netlify.cmd"
+  publish = ".next"
   ignore = "exit 1" # Don't ignore any builds
 
 [[plugins]]
