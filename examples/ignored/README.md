@@ -1,1 +1,0 @@
-This app should be ignored during build
