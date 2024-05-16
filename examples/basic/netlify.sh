@@ -1,3 +1,4 @@
 echo LOCALTEST=Foo >> .env.local
-cd ../..
+# cd ../..
+# npm run build:example
 npm run build:example
