@@ -21,7 +21,7 @@ const OPTIONS: any = {
 export const list = async () => {
     const pages = getStore(OPTIONS);
 
-    return (await pages.list()).blobs.map(x => prepareUrlKey(x.key));
+    return (await pages.list()).blobs.map(x => `/${decodeURIComponent(x.key)}`);
 }
 
 const getStoreForUrl = (url: string) => {
@@ -29,10 +29,10 @@ const getStoreForUrl = (url: string) => {
 }
 
 const prepareUrlKey = (url: string) => {
-    if (url.startsWith('/')) {
-        return encodeURIComponent(url.substring(1));
+    if (!url.startsWith('/')) {
+        throw new Error('URL must start with a forward-slash');
     }
-    return encodeURIComponent(url);
+    return encodeURIComponent(url.substring(1));
 }
 
 export const add = async (url: string, data: any): Promise<void> => {
