@@ -21,7 +21,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
         //     { params: { segment: ['one'] } },
         //     { params: { segment: ['two'] } }
         // ],
-        paths: pages.map((p) => ({ params: { segment: p.split('/') } })),
+        paths: pages.map((p) => ({ params: { segment: p.substring(1).split('/') } })),
         fallback: 'blocking',
     }
 }

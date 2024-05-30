@@ -35,6 +35,6 @@ export async function generateStaticParams() {
     const pages = (await list());
 
     return pages.map(p => ({
-        segment: p.split('/')
+        segment: p.substring(1).split('/')
     }))
 }
