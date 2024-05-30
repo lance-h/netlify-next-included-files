@@ -1,45 +1,56 @@
 
 import { getStore } from "@netlify/blobs";
 
-const fetcher = (input: any, init: any) => {
+const fetcher = (tags: string[]) => (input: any, init: any) => {
     return fetch(input, {
         ...init || {},
         next: {
-            tags: ['blobs']
+            tags
         }
     });
 };
 
 const OPTIONS: any = {
-    siteID: '4b00ab44-d458-42e5-930d-e9e41a638a8f',
-    token: 'nfp_RyCp3UTbE3MuF4xcPsPApwXZeobPqk3Ucf8b',
+    siteID: process.env.BLOBS_SITEID,
+    token: process.env.BLOBS_TOKEN,
     name: 'pages',
     consistency: 'strong',
-    fetch: fetcher,
+    fetch: fetcher(['blobs']),
 };
 
 export const list = async () => {
     const pages = getStore(OPTIONS);
 
-    return (await pages.list()).blobs
+    return (await pages.list()).blobs.map(x => prepareUrlKey(x.key));
+}
+
+const getStoreForUrl = (url: string) => {
+    return getStore({ ...OPTIONS, fetch: fetcher(['blobs', `page:${url}`]) });
+}
+
+const prepareUrlKey = (url: string) => {
+    if (url.startsWith('/')) {
+        return encodeURIComponent(url.substring(1));
+    }
+    return encodeURIComponent(url);
 }
 
 export const add = async (url: string, data: any): Promise<void> => {
-    const pages = getStore(OPTIONS);
+    const pageStore = getStoreForUrl(url);
 
-    await pages.setJSON(url, { url, ...data });
+    await pageStore.setJSON(prepareUrlKey(url), { url, ...data });
 }
 
 export const remove = async (url: string): Promise<void> => {
-    const pages = getStore(OPTIONS);
+    const pageStore = getStoreForUrl(url);
 
-    await pages.delete(url);
+    await pageStore.delete(prepareUrlKey(url));
 }
 
 export const get = async (url: string): Promise<string> => {
-    const pages = getStore(OPTIONS);
+    const pageStore = getStoreForUrl(url);
 
-    return await pages.get(url, { type: 'json'}).catch((err) => {
+    return await pageStore.get(prepareUrlKey(url), { type: 'json'}).catch((err) => {
         return undefined;
     });
 }

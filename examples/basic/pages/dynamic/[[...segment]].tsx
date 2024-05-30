@@ -21,14 +21,15 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
         //     { params: { segment: ['one'] } },
         //     { params: { segment: ['two'] } }
         // ],
-        paths: pages.map((p) => ({ params: { segment: [p.key] } })),
+        paths: pages.map((p) => ({ params: { segment: p.split('/') } })),
         fallback: 'blocking',
     }
 }
 
 export const getStaticProps: GetStaticProps<Props, Params> = async (context) => {
     console.log('getStaticProps', context.params?.segment);
-    const page = await get(context.params?.segment[0] || '');
+    const url = ['', ...(context.params?.segment || [])].join('/');
+    const page = await get(url);
 
     if (!page) {
         return {
