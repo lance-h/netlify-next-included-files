@@ -19,7 +19,7 @@ export default async function Page(props: any) {
     const pages = (await list());
 
     return <div>
-        <h1>Hello World</h1>
+        <h1>Using App Router</h1>
         {/* NOTE: Do NOT render props directly - it appears that attempting to consume props.searchParams opts the request into SSR */}
         <pre>{JSON.stringify(props.params)}</pre>
         <pre>{JSON.stringify(page)}</pre>

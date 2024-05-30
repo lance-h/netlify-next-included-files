@@ -1,12 +1,22 @@
 import { get, list } from "@/lib/pages";
 import { GetStaticPaths, GetStaticProps } from "next";
+import Link from "next/link";
 import { FC } from "react";
 
 type Params = { segment: Array<string> };
-type Props = { params?: Params };
+type Props = { params?: Params; page: any; pages: Array<string> };
 
 const Page: FC<Props> = (props) => {
-    return <><pre>{JSON.stringify(props)}</pre></>;
+    const { pages } = props;
+    return <div>
+        <h1>Using Page Router</h1>
+        <pre>{JSON.stringify(props.params)}</pre>
+        <pre>{JSON.stringify(props.page)}</pre>
+        <h2>All Pages</h2>
+        <ul>
+            {pages.map((page) => <li key={page}><Link prefetch={false} href={`/dynamic${page}`}>{page}</Link></li>)}
+        </ul>
+    </div>;
 }
 
 export default Page;
@@ -16,11 +26,6 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
     const pages = await list();
 
     return {
-        // paths: ['/one', '/two']
-        // paths: [
-        //     { params: { segment: ['one'] } },
-        //     { params: { segment: ['two'] } }
-        // ],
         paths: pages.map((p) => ({ params: { segment: p.substring(1).split('/') } })),
         fallback: 'blocking',
     }
@@ -30,6 +35,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (context) => 
     console.log('getStaticProps', context.params?.segment);
     const url = ['', ...(context.params?.segment || [])].join('/');
     const page = await get(url);
+    const pages = await list();
 
     if (!page) {
         return {
@@ -38,6 +44,10 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (context) => 
     }
 
     return {
-        props: { params: context.params }
+        props: { 
+            params: context.params,
+            page,
+            pages,
+        }
     }
 }
