@@ -1,3 +1,4 @@
+import cache from "@/lib/cache";
 import provider from "@/lib/pages"
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -8,7 +9,7 @@ export default async function Page(props: any) {
     // const url = ['', ...(props.params.segment || [''])].join('/');
     const url = `/${(props.params.segment || []).join('/')}`;
     // const url = `/${(props.params.segment).join('/') || ''}`;
-    console.log('Dynamic Page', url, new Date());
+    console.log('Dynamic Page', { url, date: new Date(), cache });
     const page = await provider.get(url).catch((err) => {
         console.error('Error during page fetch', err);
         return undefined;
@@ -25,6 +26,7 @@ export default async function Page(props: any) {
         {/* NOTE: Do NOT render props directly - it appears that attempting to consume props.searchParams opts the request into SSR */}
         <pre>{JSON.stringify(props.params)}</pre>
         <pre>{JSON.stringify(page)}</pre>
+        <pre>{JSON.stringify(cache)}</pre>
         <h2>All Pages</h2>
         <ul>
             {pages.map((page) => <li key={page}><Link prefetch={false} href={`/app-dynamic${page}`}>{page}</Link></li>)}
