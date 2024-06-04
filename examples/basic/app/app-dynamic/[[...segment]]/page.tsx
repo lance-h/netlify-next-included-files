@@ -5,7 +5,9 @@ import { notFound } from "next/navigation";
 export const revalidate = 3600;
 
 export default async function Page(props: any) {
-    const url = ['', ...(props.params.segment || [''])].join('/');
+    // const url = ['', ...(props.params.segment || [''])].join('/');
+    const url = `/${(props.params.segment || []).join('/')}`;
+    // const url = `/${(props.params.segment).join('/') || ''}`;
     console.log('Dynamic Page', url, new Date());
     const page = await provider.get(url).catch((err) => {
         console.error('Error during page fetch', err);

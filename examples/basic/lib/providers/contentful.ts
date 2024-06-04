@@ -52,7 +52,7 @@ const blobsProvider: PageProvider = {
         });
         const entries = await getEntries(search, ['contentfulall', `page:${url}`]);
 
-        return entries.items?.[0].fields;
+        return entries.items?.[0]?.fields;
     }
 }
 
