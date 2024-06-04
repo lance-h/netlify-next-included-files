@@ -1,4 +1,4 @@
-import { get, list } from "@/lib/pages"
+import provider from "@/lib/pages"
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -7,7 +7,7 @@ export const revalidate = 3600;
 export default async function Page(props: any) {
     const url = ['', ...(props.params.segment || [])].join('/');
     console.log('Dynamic Page', url, new Date());
-    const page = await get(url).catch((err) => {
+    const page = await provider.get(url).catch((err) => {
         console.error('Error during page fetch', err);
         return undefined;
     });
@@ -16,7 +16,7 @@ export default async function Page(props: any) {
         return notFound();
     }
 
-    const pages = (await list());
+    const pages = (await provider.list());
 
     return <div>
         <h1>Using App Router</h1>
@@ -32,7 +32,7 @@ export default async function Page(props: any) {
 
 export async function generateStaticParams() {
     console.log('generateStaticParams');
-    const pages = (await list());
+    const pages = (await provider.list());
 
     return pages.map(p => ({
         segment: p.substring(1).split('/')

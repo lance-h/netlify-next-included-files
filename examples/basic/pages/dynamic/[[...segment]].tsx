@@ -1,4 +1,4 @@
-import { get, list } from "@/lib/pages";
+import provider from "@/lib/pages";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Link from "next/link";
 import { FC } from "react";
@@ -23,7 +23,7 @@ export default Page;
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
     console.log('getStaticPaths');
-    const pages = await list();
+    const pages = await provider.list();
 
     return {
         paths: pages.map((p) => ({ params: { segment: p.substring(1).split('/') } })),
@@ -34,8 +34,8 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 export const getStaticProps: GetStaticProps<Props, Params> = async (context) => {
     console.log('getStaticProps', context.params?.segment);
     const url = ['', ...(context.params?.segment || [])].join('/');
-    const page = await get(url);
-    const pages = await list();
+    const page = await provider.get(url);
+    const pages = await provider.list();
 
     if (!page) {
         return {
