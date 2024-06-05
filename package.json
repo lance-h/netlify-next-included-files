@@ -6,7 +6,8 @@
       "examples/*"
     ],
     "scripts": {
-      "build:example": "npm run build -w examples/basic"
+      "build:example": "npm run build -w examples/basic",
+      "start:example": "npm run start -w examples/basic -- --port 3050"
     },
     "author": "Octana",
     "license": "ISC"
